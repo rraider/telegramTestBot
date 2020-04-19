@@ -1,8 +1,10 @@
+
 process.env.BOT_TOKEN = '1233303978:AAGXDhlYP0NbjInFjo-5RMSUsVEpm32xTn0'
 const Telegraf = require('telegraf')
 const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
 const WizardScene = require('telegraf/scenes/wizard')
+const Stage = require('telegraf/stage');
 const session = require('telegraf/session')
 const { reply, fork } = Telegraf
 
@@ -27,11 +29,18 @@ const add = new WizardScene(
     ctx => {
         ctx.wizard.state.B = ctx.message.text;
         ctx.reply('you entered: ' + ctx.wizard.state.B );
-        ctx.reply('the sum is:' + (ctx.wizard.state.B + ctx.wizard.state.A))
+        var a = parseInt(ctx.wizard.state.A);
+        var b = parseInt(ctx.wizard.state.B);
+        ctx.reply('the sum is: ' + (a + b));
+        console.log("---------------");
+        console.log(ctx.from.first_name);
+        console.log("A: " + a);
+        console.log("B: " + b);
+        //console.log("---------------");
         return ctx.scene.leave();
     }
 )
-const stage = new Stage([add]);
+const stage = new Stage([add], { default: 'sum' });
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
